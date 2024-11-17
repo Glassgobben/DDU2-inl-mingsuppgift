@@ -1,1 +1,0 @@
-# DDU2-inl-mingsuppgift
