@@ -109,18 +109,44 @@ if (cities[cityId]) {
 const table = document.getElementById("table");
 const citiesPlusDistances = cities.length + 1;
 const cellAmount = citiesPlusDistances * citiesPlusDistances;
-
+const tableContent = cities.length * cities.length;
 
 for (let i = 0; i < cellAmount; i++) {
     const div = document.createElement("div");
     div.setAttribute("class", "cell");
     table.append(div);
     table.style.gridTemplateRows = "repeat(39, 1fr)";
+    const j = i - 1;
     if (i > 0 && i < 40) {
-        const j = i - 1;
-        div.textContent = `${i}`;
+        div.textContent = `${j}`;
         div.setAttribute("class", "cell head_column");
     }
+    if (i > cities.length + 1) {
+        if (i % 2 === 1) {
+            div.setAttribute("class", "cell even_col");
+        }
+    }
+    const columns = 40;
+    if (Math.floor(i / columns) % 2 === 1) {
+        div.style.borderBottom = "2px solid black";
+    }
+    const rows = 39;
+    if (i > columns) { // Börja från andra raden
+        const city1 = Math.floor(i / columns);  // Radnummer som stad
+        const city2 = i % columns;  // Kolumnnummer som stad
+
+        const distanceObj = distances.find(d =>
+            (d.city1 === city1 && d.city2 === city2) || (d.city1 === city2 && d.city2 === city1)
+        );
+
+        // Om distans finns, sätt den i cellen
+        if (distanceObj) {
+            div.textContent = distanceObj.distance;
+        } else {
+            div.textContent = ""; // Om ingen distans finns
+        }
+    }
+
 }
 
 const div = document.querySelectorAll("#table div");
@@ -135,15 +161,4 @@ for (let i = 0; i < cities.length; i++) {
     headRow[i].textContent = `${i}-${cities[i].name}`;
 }
 
-const cell = document.querySelectorAll("div .cell")
-
-for (let i = 41; i < cellAmount; i++) {
-    const j = i - 41;
-    if (j == distances[j].city1 && j == distances[j].city2) {
-        continue;
-    } else {
-        const distance = kmToMil(distances[j].distance);
-        cell[i].textContent = `${distance}`;
-    }
-}
-
+const cell = document.querySelectorAll("div.cell:not(.head_row):not(.head_column)")
