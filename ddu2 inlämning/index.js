@@ -121,24 +121,37 @@ for (let i = 0; i < cellAmount; i++) {
         div.textContent = `${j}`;
         div.setAttribute("class", "cell head_column");
     }
-    if (i > cities.length + 1) {
+    const columns = 40;
+    if (i > columns) {
         if (i % 2 === 1) {
             div.setAttribute("class", "cell even_col");
         }
     }
-    const columns = 40;
     if (Math.floor(i / columns) % 2 === 1) {
         div.style.borderBottom = "2px solid black";
     }
     const rows = 40;
-    if (i > columns && columns < cellAmount) {
-        const b = columns - columns;
-        div.textContent = `${cities.id[b]}-${cities.name[b]}`;
+    if (i > columns) { // Börja från andra raden
+        const city1 = Math.floor(i / columns);  // Radnummer som stad
+        const city2 = i % city1;  // Kolumnnummer som stad
+
+        const l = columns + 1;
+        const newI = l - i;
+        div.textContent = cityDistances(city2)[newI];
     }
+
 }
 
-let getDiv = document.querySelectorAll("#table div");
+const div = document.querySelectorAll("#table div");
 
-for (let i = columns; i < cellAmount; i += columns) {
-    getDiv[i].setAttribute("class", "cell head_row");
+for (let i = 40; i < cellAmount; i += 40) {
+    div[i].setAttribute("class", "cell head_row");
 }
+
+const headRow = document.querySelectorAll("#table .cell.head_row");
+
+for (let i = 0; i < cities.length; i++) {
+    headRow[i].textContent = `${i}-${cities[i].name}`;
+}
+
+const cell = document.querySelectorAll("div.cell:not(.head_row):not(.head_column)")
