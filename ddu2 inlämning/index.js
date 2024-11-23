@@ -130,35 +130,15 @@ for (let i = 0; i < cellAmount; i++) {
     if (Math.floor(i / columns) % 2 === 1) {
         div.style.borderBottom = "2px solid black";
     }
-    const rows = 39;
-    if (i > columns) { // Börja från andra raden
-        const city1 = Math.floor(i / columns);  // Radnummer som stad
-        const city2 = i % columns;  // Kolumnnummer som stad
-
-        const distanceObj = distances.find(d =>
-            (d.city1 === city1 && d.city2 === city2) || (d.city1 === city2 && d.city2 === city1)
-        );
-
-        // Om distans finns, sätt den i cellen
-        if (distanceObj) {
-            div.textContent = distanceObj.distance;
-        } else {
-            div.textContent = ""; // Om ingen distans finns
-        }
+    const rows = 40;
+    if (i > columns && columns < cellAmount) {
+        const b = columns - columns;
+        div.textContent = `${cities.id[b]}-${cities.name[b]}`;
     }
-
 }
 
-const div = document.querySelectorAll("#table div");
+let getDiv = document.querySelectorAll("#table div");
 
-for (let i = 40; i < cellAmount; i += 40) {
-    div[i].setAttribute("class", "cell head_row");
+for (let i = columns; i < cellAmount; i += columns) {
+    getDiv[i].setAttribute("class", "cell head_row");
 }
-
-const headRow = document.querySelectorAll("#table .cell.head_row");
-
-for (let i = 0; i < cities.length; i++) {
-    headRow[i].textContent = `${i}-${cities[i].name}`;
-}
-
-const cell = document.querySelectorAll("div.cell:not(.head_row):not(.head_column)")
