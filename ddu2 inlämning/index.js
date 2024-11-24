@@ -39,6 +39,9 @@ function kmToMil(km) {
     return km / 10;
 }
 
+const columns = 40;
+const l = columns + 1;
+
 // Recommended: constants with references to existing HTML-elements
 
 const h2 = document.querySelector("h2");
@@ -121,7 +124,6 @@ for (let i = 0; i < cellAmount; i++) {
         div.textContent = `${j}`;
         div.setAttribute("class", "cell head_column");
     }
-    const columns = 40;
     if (i > columns) {
         if (i % 2 === 1) {
             div.setAttribute("class", "cell even_col");
@@ -130,25 +132,19 @@ for (let i = 0; i < cellAmount; i++) {
     if (Math.floor(i / columns) % 2 === 1) {
         div.style.borderBottom = "2px solid black";
     }
+    const newI = i - l;
     if (i > columns) {
-        const city1 = Math.floor(i / columns);  // Radnummer som stad
-        const city2 = city1 > 0 ? i % city1 : 0;  // Kolumnnummer som stad
-
-        const l = columns + 1;
-        const newI = i - l;
-
-        const distancesArray = [];
-        distancesArray.push(kmToMil(cityDistances(newI)[city2]))
-
-        for (let i = 0; i < distancesArray.length; i++) {
-            if (distancesArray[newI] === distancesArray[newI]) { // Villkor för att ta bort ett element
-                distancesArray.splice(newI, 1); // Ta bort elementet vid index i
+        function ajde(a) {
+            if (newI == cities.id) {
+                const array = [cityDistances(a)];
+                array.splice(a, 1, "");
+                return array;
             }
         }
-        div.textContent = distancesArray;
+        table.append(div);
+        div.textContent = ajde(newI)[newI];
     }
 }
-
 const div = document.querySelectorAll("#table div");
 
 for (let i = 40; i < cellAmount; i += 40) {
