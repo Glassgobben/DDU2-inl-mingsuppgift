@@ -130,16 +130,23 @@ for (let i = 0; i < cellAmount; i++) {
     if (Math.floor(i / columns) % 2 === 1) {
         div.style.borderBottom = "2px solid black";
     }
-    const rows = 40;
-    if (i > columns) { // Börja från andra raden
+    if (i > columns) {
         const city1 = Math.floor(i / columns);  // Radnummer som stad
-        const city2 = i % city1;  // Kolumnnummer som stad
+        const city2 = city1 > 0 ? i % city1 : 0;  // Kolumnnummer som stad
 
         const l = columns + 1;
-        const newI = l - i;
-        div.textContent = cityDistances(city2)[newI];
-    }
+        const newI = i - l;
 
+        const distancesArray = [];
+        distancesArray.push(kmToMil(cityDistances(newI)[city2]))
+
+        for (let i = 0; i < distancesArray.length; i++) {
+            if (distancesArray[newI] === distancesArray[newI]) { // Villkor för att ta bort ett element
+                distancesArray.splice(newI, 1); // Ta bort elementet vid index i
+            }
+        }
+        div.textContent = distancesArray;
+    }
 }
 
 const div = document.querySelectorAll("#table div");
