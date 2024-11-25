@@ -115,46 +115,45 @@ const distanceArray = [];
 const tableArray = [];
 
 const columns = 40;
+const rows = columns;
 const l = columns + 1;
 
-for (let i = 0; i < cities.length; i++) {
-    const j = i - 1;
-    if (i < 1) {
-        tableArray.push(`${cities[i].id}-${cities[i].name}`);
-    } else if (i > 0) {
-        tableArray.push(cityDistances(j));
+
+for (let y = -1; y < columns - 1; y++) {
+    for (let x = -1; x < rows - 1; x++) {
+        const div = document.createElement("div");
+        div.classList.add('cell');
+        div.textContent = `${y}`;
+        if (y === -1 && x === -1) {
+            div.textContent = "";
+        }
+        if (y === -1 && x > -1) {
+            div.classList.add('head_column');
+            div.textContent = x;
+        }
+        if (y > -1 && x === -1) {
+            div.classList.add('head_row');
+            div.textContent = `${y}-${cities[y].name}`
+        }
+        if (y > -1 && y % 2 === 0) {
+            div.classList.add('even_row');
+        }
+        if (y > -1 && x > -1) {
+            if (x % 2 === 0) {
+                div.classList.add('even_col');
+            }
+            if (x === y) {
+                div.textContent = "";
+            } else {
+                div.textContent = kmToMil(cityDistances(y)[x])
+                console.log(kmToMil(cityDistances(y)[x]))
+            }
+        }
+
+        table.append(div);
     }
-    console.log(tableArray)
 }
 
-
-for (let i = 0; i < cellAmount; i++) {
-    const div = document.createElement("div");
-    div.setAttribute("class", "cell");
-    table.append(div);
-    table.style.gridTemplateRows = "repeat(39, 1fr)";
-    const j = i - 1;
-    if (i < columns) {
-        if (i < 1) {
-            headColArray.push("");
-        } else if (i > 0) {
-            headColArray.push(j);
-        }
-        div.setAttribute("class", "cell head_column");
-        div.textContent = headColArray[i];
-    }
-    if (i > columns) {
-        div.textContent = `${distanceArray}`
-    }
-    if (i > columns) {
-        if (i % 2 === 1) {
-            div.classList.add('even_col');
-        }
-    }
-    if (Math.floor(i / citiesPlusDistances) % 2 === 1) {
-        div.classList.add('even_row');
-    }
-}
 
 const div = document.querySelectorAll("#table div");
 
