@@ -106,17 +106,9 @@ if (cities[cityId]) {
 }
 
 const table = document.getElementById("table");
-const citiesPlusDistances = cities.length + 1;
-const cellAmount = citiesPlusDistances * citiesPlusDistances;
-const tableContent = cities.length * cities.length;
-
-const headColArray = [];
-const distanceArray = [];
-const tableArray = [];
 
 const columns = 40;
 const rows = columns;
-const l = columns + 1;
 
 
 for (let y = -1; y < columns - 1; y++) {
@@ -142,29 +134,17 @@ for (let y = -1; y < columns - 1; y++) {
             if (x % 2 === 0) {
                 div.classList.add('even_col');
             }
+            const z = x - 1;
+            if (x !== y) {
+                div.textContent = kmToMil(cityDistances(y)[z]);
+            }
+            if (x < y) {
+                div.textContent = kmToMil(cityDistances(y)[x]);
+            }
             if (x === y) {
-                div.textContent = "";
-            } else {
-                div.textContent = kmToMil(cityDistances(y)[x])
-                console.log(kmToMil(cityDistances(y)[x]))
+                div.textContent = ""
             }
         }
-
         table.append(div);
     }
 }
-
-
-const div = document.querySelectorAll("#table div");
-
-for (let i = 40; i < cellAmount; i += 40) {
-    div[i].classList.add('head_row');
-}
-
-const headRow = document.querySelectorAll("#table .cell.head_row");
-/*
-for (let i = 0; i < cities.length; i++) {
-    headRow[i].textContent = `${i}-${cities[i].name}`;
-} */
-
-const cell = document.querySelectorAll("div.cell:not(.head_row):not(.head_column)")
