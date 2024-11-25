@@ -39,9 +39,6 @@ function kmToMil(km) {
     return km / 10;
 }
 
-const columns = 40;
-const l = columns + 1;
-
 // Recommended: constants with references to existing HTML-elements
 
 const h2 = document.querySelector("h2");
@@ -61,7 +58,6 @@ for (const city of cities) {
 
 findCity(chooseCity); //Hittar din valda stads id.
 const cityId = findCity(chooseCity);
-
 
 const space = " ";
 
@@ -114,47 +110,62 @@ const citiesPlusDistances = cities.length + 1;
 const cellAmount = citiesPlusDistances * citiesPlusDistances;
 const tableContent = cities.length * cities.length;
 
+const headColArray = [];
+const distanceArray = [];
+const tableArray = [];
+
+const columns = 40;
+const l = columns + 1;
+
+for (let i = 0; i < cities.length; i++) {
+    const j = i - 1;
+    if (i < 1) {
+        tableArray.push(`${cities[i].id}-${cities[i].name}`);
+    } else if (i > 0) {
+        tableArray.push(cityDistances(j));
+    }
+    console.log(tableArray)
+}
+
+
 for (let i = 0; i < cellAmount; i++) {
     const div = document.createElement("div");
     div.setAttribute("class", "cell");
     table.append(div);
     table.style.gridTemplateRows = "repeat(39, 1fr)";
     const j = i - 1;
-    if (i > 0 && i < 40) {
-        div.textContent = `${j}`;
+    if (i < columns) {
+        if (i < 1) {
+            headColArray.push("");
+        } else if (i > 0) {
+            headColArray.push(j);
+        }
         div.setAttribute("class", "cell head_column");
+        div.textContent = headColArray[i];
+    }
+    if (i > columns) {
+        div.textContent = `${distanceArray}`
     }
     if (i > columns) {
         if (i % 2 === 1) {
-            div.setAttribute("class", "cell even_col");
+            div.classList.add('even_col');
         }
     }
-    if (Math.floor(i / columns) % 2 === 1) {
-        div.style.borderBottom = "2px solid black";
-    }
-    const newI = i - l;
-    if (i > columns) {
-        function ajde(a) {
-            if (newI == cities.id) {
-                const array = [cityDistances(a)];
-                array.splice(a, 1, "");
-                return array;
-            }
-        }
-        table.append(div);
-        div.textContent = ajde(newI)[newI];
+    if (Math.floor(i / citiesPlusDistances) % 2 === 1) {
+        div.classList.add('even_row');
     }
 }
+
 const div = document.querySelectorAll("#table div");
 
 for (let i = 40; i < cellAmount; i += 40) {
-    div[i].setAttribute("class", "cell head_row");
+    div[i].classList.add('head_row');
 }
 
 const headRow = document.querySelectorAll("#table .cell.head_row");
-
+/*
 for (let i = 0; i < cities.length; i++) {
     headRow[i].textContent = `${i}-${cities[i].name}`;
-}
+} */
 
 const cell = document.querySelectorAll("div.cell:not(.head_row):not(.head_column)")
