@@ -1,5 +1,3 @@
-// Recommended: All functions declared here
-
 function findCity(a) {
     for (let i = 0; i < cities.length; i++) {
         if (a === cities[i].name.toLowerCase()) {
@@ -39,15 +37,12 @@ function kmToMil(km) {
     return km / 10;
 }
 
-// Recommended: constants with references to existing HTML-elements
-
 const h2 = document.querySelector("h2");
 const h3 = document.querySelector("h3");
 const title = document.querySelector("title");
 const idCities = document.getElementById("cities");
 const table = document.getElementById("table");
 
-// Recommended: Ask for the city name and then the rest of the code
 let chooseCity = prompt("Vilken stad?").toLowerCase();
 
 for (const city of cities) {
@@ -57,7 +52,7 @@ for (const city of cities) {
     idCities.append(elementP);
 }
 
-findCity(chooseCity); //Hittar din valda stads id.
+findCity(chooseCity);
 const cityId = findCity(chooseCity);
 
 const space = " ";
@@ -69,35 +64,27 @@ if (cities[cityId]) {
     const target = cityBox[cityId];
     target.className = "cityBox target";
 
-    cityDistances(cityId); //hittar alla distanser i jämförelse med din stad
-
+    cityDistances(cityId);
     const yourCityDistances = cityDistances(cityId);
 
-    const closestDistance = Math.min(...yourCityDistances); //filtrerar ut distanser som ligger närmast din stad
-    const furthestDistance = Math.max(...yourCityDistances); //filtrerar ut distanser längst bort från din stad
-
-    distanceMatch(closestDistance); //matchar din stads id med staden närmasts id
-    distanceMatch(furthestDistance); //matchar din stads id med staden längst borts id
+    const closestDistance = Math.min(...yourCityDistances);
+    const furthestDistance = Math.max(...yourCityDistances);
+    distanceMatch(closestDistance);
+    distanceMatch(furthestDistance);
 
     const dmClosest = distanceMatch(closestDistance);
-
     const closestCity = cities[dmClosest].name;
     cityBox[dmClosest].textContent = `${closestCity} ligger ${kmToMil(closestDistance)} mil bort`;
-
     const classClosest = cityBox[dmClosest];
     classClosest.className = "cityBox closest";
-
     const getSpanClosest = document.getElementById("closest");
     getSpanClosest.textContent = closestCity;
 
     const dmFurthest = distanceMatch(furthestDistance);
-
     const furthestCity = cities[dmFurthest].name;
     cityBox[dmFurthest].textContent = `${furthestCity} ligger ${kmToMil(furthestDistance)} mil bort`;
-
     const classFurthest = cityBox[dmFurthest];
     classFurthest.className = "cityBox furthest";
-
     const getSpanFurthest = document.getElementById("furthest");
     getSpanFurthest.textContent = furthestCity;
 } else {
