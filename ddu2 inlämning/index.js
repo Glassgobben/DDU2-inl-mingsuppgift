@@ -45,6 +45,7 @@ const h2 = document.querySelector("h2");
 const h3 = document.querySelector("h3");
 const title = document.querySelector("title");
 const idCities = document.getElementById("cities");
+const table = document.getElementById("table");
 
 // Recommended: Ask for the city name and then the rest of the code
 let chooseCity = prompt("Vilken stad?").toLowerCase();
@@ -64,7 +65,7 @@ const space = " ";
 if (cities[cityId]) {
     h2.textContent = `${cities[cityId].name}` + space + `(${cities[cityId].country})`;
     title.textContent = `${cities[cityId].name}`;
-    const cityBox = document.querySelectorAll(`.cityBox`);
+    const cityBox = document.querySelectorAll(".cityBox");
     const target = cityBox[cityId];
     target.className = "cityBox target";
 
@@ -80,39 +81,36 @@ if (cities[cityId]) {
 
     const dmClosest = distanceMatch(closestDistance);
 
-    const closestCity = `${cities[dmClosest].name}`;
+    const closestCity = cities[dmClosest].name;
     cityBox[dmClosest].textContent = `${closestCity} ligger ${kmToMil(closestDistance)} mil bort`;
 
     const classClosest = cityBox[dmClosest];
     classClosest.className = "cityBox closest";
 
-    const spanClosest = document.getElementById("closest");
-    spanClosest.textContent = closestCity;
+    const getSpanClosest = document.getElementById("closest");
+    getSpanClosest.textContent = closestCity;
 
     const dmFurthest = distanceMatch(furthestDistance);
 
-    const furthestCity = `${cities[dmFurthest].name}`;
+    const furthestCity = cities[dmFurthest].name;
     cityBox[dmFurthest].textContent = `${furthestCity} ligger ${kmToMil(furthestDistance)} mil bort`;
 
     const classFurthest = cityBox[dmFurthest];
     classFurthest.className = "cityBox furthest";
 
-    const spanFurthest = document.getElementById("furthest");
-    spanFurthest.textContent = furthestCity;
+    const getSpanFurthest = document.getElementById("furthest");
+    getSpanFurthest.textContent = furthestCity;
 } else {
     h2.textContent = `${chooseCity} finns inte i databasen`;
     h3.textContent = "";
     title.textContent = "Not Found";
 }
 
-const table = document.getElementById("table");
-
 const columns = 40;
 const rows = columns;
 
-
-for (let y = -1; y < columns - 1; y++) {
-    for (let x = -1; x < rows - 1; x++) {
+for (let y = -1; y < rows - 1; y++) {
+    for (let x = -1; x < columns - 1; x++) {
         const div = document.createElement("div");
         div.classList.add('cell');
         div.textContent = `${y}`;
@@ -135,7 +133,7 @@ for (let y = -1; y < columns - 1; y++) {
                 div.classList.add('even_col');
             }
             const z = x - 1;
-            if (x !== y) {
+            if (x > y) {
                 div.textContent = kmToMil(cityDistances(y)[z]);
             }
             if (x < y) {
@@ -148,3 +146,8 @@ for (let y = -1; y < columns - 1; y++) {
         table.append(div);
     }
 }
+
+const a = document.querySelectorAll("a");
+
+a[0].href = "http://webshare.mah.se/ao8268/";
+a[1].href = "https://github.com/Glassgobben/DDU2-inl-mingsuppgift";
